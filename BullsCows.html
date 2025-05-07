@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <title>Bulls&Cows</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Sizif.png">
+    <link rel="stylesheet" href="bc.css">
+</head>
+<body>
+    <header>
+        <select id="language">
+            <option value="1">Ru</option>
+            <option value="0">En</option>
+            <option value="2">Fr</option>
+            <option value="3">De</option>
+        </select>
+        <button id="compVsComp">&#128187 vs &#x1F4BB</button>
+        <button id="compVsUser">&#128187 vs &#128104</button>
+    </header>
+    <div id="status-panel">
+        <label id="info">Здесь будет статус игры</label>
+        <progress id="progressBar" value="0" max="100"></progress>
+    </div>
+    
+    <div class="flex-container">
+        <div class="side"></div>
+
+        <div id="tableua">
+            <div class="message-container">Здесь будет отображаться ход игры</div>
+        </div>
+
+        <div class="side"></div>
+
+    </div>
+    
+    <footer>@sumburovsn@gmail.com</footer>
+    
+    <script src="Phrases.js"></script>
+    <script src="Game.js"></script>
+    <script src="BullsCows.js"></script>
+    <script src="Player.js"></script>    
+    <script src="DecisionMaker.js"></script>
+</body>
+</html>
+

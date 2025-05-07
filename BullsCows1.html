@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <title>Bulls&Cows</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Sizif.png">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+    <div class="w3-row">
+        <div class="w3-container w3-green w3-cell w3-half">        
+            <div class="w3-container w3-card w3-margin-top">            
+                <div class="w3-container w3-cell">
+                    <button class="w3-button w3-card w3-green w3-margin-top w3-margin-bottom" id="newGameBtn">Новая игра</button>
+                    <label id="info" class="w3-input w3-margin-top w3-margin-bottom">Info:</label>
+                    <p>
+                        <label for="guess">Ваша догадка</label>
+                        <input class="w3-text" type="text" id="guess"></p>
+                        <button class="w3-button w3-card w3-green w3-margin-top w3-margin-bottom" id="makeGuessBtn">Подтведить Ваш ход</button>
+                
+                </div>
+            </div>
+        </div>
+        <div id="tableua" class="w3-container w3-pale-green w3-cell w3-half">
+            <div class="w3-container w3-card">
+                <h2>Ход игры</h2>
+                <!-- <p>
+                    <textarea id="gamelog" class="w3-input w3-border" rows="20" cols="100" style="max-width:500px;"></textarea></p> -->
+                    <h1>Прогресс выполнения</h1>
+                    <progress id="progressBar" value="0" max="100"></progress>
+            </div>            
+        </div>
+    </div>
+    <script src="Game.js"></script>
+    <script src="BullsCows.js"></script>
+    <script src="Player.js"></script>    
+    <script src="DecisionMaker.js"></script>
+</body>
+</html>
+

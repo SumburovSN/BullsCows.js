@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+body {
+    background-color: #95db66;
+}
+
+header, #status-panel {
+    background-color: rgb(46, 223, 70);
+    color: white;
+    padding: 15px;
+    width: 100%;
+}
+
+/* header, footer, #status-panel {
+    background-color: rgb(46, 223, 70);
+    color: white;
+    padding: 15px;
+    width: 100%;
+} */
+
+header {
+    position: sticky;
+    top: 0;
+}
+
+#status-panel {
+    position: sticky;
+    top: 40px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+}
+
+.flex-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.side {
+    flex: 20%;
+}
+
+/* Responsive layout - makes a one column-layout instead of a two-column layout */
+@media (max-width: 800px) {
+    .side {
+      display: none;
+    }
+}
+
+#tableua {
+    flex: 60%;
+    background-color: #e8f0e2;
+    border: 0.5px inset #95db66;
+}
+
+.message-left {
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #dd8c8c;
+    border: 0.5px solid #ec1a1a;
+    border-radius: 50px;
+    flex: 70%;
+}
+
+.message-right {
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #8d82e9;
+    border: 0.5px solid #8b05b4;
+    border-radius: 50px;
+    flex: 70%;
+}
+
+.message-container {
+    margin: 10px 10px;
+    padding: 15px;
+    background-color: #eef072;
+    border: 0.5px solid #95db66;
+    border-radius: 50px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.message {
+    flex: 100%;
+}
+
+.empty-box{
+    flex: 30%;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.reference-text {
+    font-size: 10px;
+}
+
+#progressBar {
+    display: none;
+}
+
+#language {
+    float: right;
+}
+
+/* #compVsComp, #compVsUser, #language {
+    margin: 10px;
+} */
