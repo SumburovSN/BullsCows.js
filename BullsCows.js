@@ -5,56 +5,43 @@ class BullsCows {
 
     constructor(){
         this._player1 = new Player();
-        // if (user > 0) player2 = new UserPlayer(language);
-        // else player2 = new Player(language);
         this._player2 = new Player();
         this._isGame = true;
     }
 
     async startCompGame(){
-        let move = 1;
-        let response1;
-        let response2;
         while (this._isGame){
+            let move = this.getPlayer1().getGameLog().length + 1;
             insertGameMessage(phrases.getPhrase("move") + move);
-            response2 = await this.player1Guessing();
-            response1 = await this.player2Guessing();
-            // if (response1 == 5) {
-            //     insertGameMessage(phrases.getPhrase("end"));
-            //     continue;
-            // }
-            if (response2 == 40 || response1 == 40) {
-                this._isGame = false;
-                this.printWinner(response1, response2);
-                // this.printWinner(response1, response2);
-                endGame(phrases.getPhrase("gameover"));
-            }
-            if (this.getPlayer1().getDecisionsField().length == 0 ||
-            this.getPlayer2().getDecisionsField().length == 0) this._isGame = false;
-            move++;
+            await this.player1Guessing();
+            await this.player2Guessing();
+            this.checkCurrentResult();
         }
     }
 
-    async startUserGame(){
-        this.inputSecretCode();
-        await this.nextStep();
-    }
-
-    async nextStep(){
-        if (!this._isGame) return;
-        if (this.getPlayer1().getDecisionsField().length == 0 ||
-            this.getPlayer2().getDecisionsField().length == 0) this._isGame = false;
-        if (this.getPlayer1().getGameLog().length > 0) {
-            if (this.getPlayer1().getGameLog().at(-1)[1] == 40 || this.getPlayer2().getGameLog().at(-1)[1] == 40) {
+    checkCurrentResult(){
+        if (this.getPlayer1().getGameLog().at(-1)[1] == 40 || this.getPlayer2().getGameLog().at(-1)[1] == 40) {
                 this._isGame = false;
                 this.printWinner();
                 endGame(phrases.getPhrase("gameover"));
             }
-        }
-        let move = this.getPlayer1().getGameLog.length + 1;
+        if (this.getPlayer1().getDecisionsField().length == 0 || this.getPlayer2().getDecisionsField().length == 0) 
+            this._isGame = false;
+    }
+
+    async startUserGame(){
+        insertGameMessage(phrases.getPhrase("guessNumber"));
+        let place = insertPlayerMessage("", 2)
+        insertUserForm(place, phrases.getPhrase("promptToNumber"), this, 1);
+    }
+
+    async nextStep(){
+        let move = this.getPlayer1().getGameLog().length + 1;
+        if (move > 1) this.checkCurrentResult();
+        if (!this._isGame) return;
         insertGameMessage(phrases.getPhrase("move") + move);
-        // await this.player1Guessing();
-        this.inputGuess();
+        await this.player1Guessing();
+        await this.userGuessing();
     }
 
     async inputHandling(guess, type){
@@ -64,91 +51,63 @@ class BullsCows {
                     await this.setSecretCode(guess);
                     break;
                 case 2:
-                    tableua.lastChild.removeChild(tableua.lastChild.lastChild);
-                    tableua.lastChild.removeChild(tableua.lastChild.lastChild);
-                    insertPlayerMessage(guess, 2);
-                    const response = this.getPlayer1().getResponse(guess);
-                    insertPlayerMessage(this.formatResponse(response), 1);
-                    this.getPlayer2().addGameLogEntry(guess, response);
-                    await this.userGuessing();
+                    await this.handlingUserGuess(guess);
             }
         }
     }
 
-    inputSecretCode(){
-        clearTableua();
-        insertGameMessage("Загадываем число...");
-        insertUserForm(this.getPlayer2(), 1);
+    async handlingUserGuess(guess){
+        tableua.lastChild.lastChild.innerHTML = guess
+        const response = this.getPlayer1().getResponse(guess);        
+        insertPlayerMessage(this.formatResponse(response), 1);
+        this.getPlayer2().addGameLogEntry(guess, response);
+        
+        await this.nextStep();
     }
-
-    // inputGuess(){
-    //     insertUserForm(this, 2);
-    // }
 
     async setSecretCode(number){
         if (this.isInputValid(number)) {
             this.getPlayer2().setSecretCode(number);
             clearTableua();
-            insertGameMessage("Игра началась");
-            insertPlayerMessage("Вы загадали число " + this.getPlayer2().getSecretCode(), 2);
+            insertGameMessage(phrases.getPhrase("gameOn"));
+            insertPlayerMessage(phrases.getPhrase("secretCode") + this.getPlayer2().getSecretCode(), 2);
         }
-        await this.userGuessing();
+        await this.nextStep();        
     }
-
-    // getCompResponse(guess){
-    //     return this.getPlayer1().getResponse(guess);
-    // }
 
     isInputValid(number) {
         return this.getPlayer2().isInputValid(number);
     }
 
     async player1Guessing(){
-        let guess;
-        let response;
-        // let message = "";
         showInfo(phrases.getPhrase("player1thinking"));
-        guess = await this.getPlayer1().nextGuess();
-        // message += "<p>" + phrases.getPhrase("rest") + this._player1.getDecisionMaker().getDecisionsField().length + "</p>";
-        // message += "<p>" + guess + "</p>";
-        // message = guess;
+        const guess = await this.getPlayer1().nextGuess();
         insertPlayerMessage(guess, 1);
-        response = this.getPlayer2().getResponse(guess);
+        const response = this.getPlayer2().getResponse(guess);
         insertPlayerMessage(this.formatResponse(response), 2);
         this.getPlayer1().addGameLogEntry(guess, response);
-        return response;
     }
 
     async player2Guessing(){
-        let guess;
-        let response;
-        // let message = "";
         showInfo(phrases.getPhrase("player2thinking"));
-        guess = await this.getPlayer2().nextGuess();
-        // message += "<p>" + phrases.getPhrase("rest") + this._player2.getDecisionMaker().getDecisionsField().length + "</p>";
-        // message += "<p>" + guess + "</p>";
-        // message = guess;
+        const guess = await this.getPlayer2().nextGuess();
         insertPlayerMessage(guess, 2);
-        response = this.getPlayer1().getResponse(guess);
+        const response = this.getPlayer1().getResponse(guess);
         insertPlayerMessage(this.formatResponse(response), 1);
         this.getPlayer2().addGameLogEntry(guess, response);
-        return response;
     }
 
     async userGuessing(){
-        let hint;
-        const move = this.getPlayer2().getGameLog().length > 0 ? this.getPlayer2().getGameLog().length + 1 : 1;
-        showInfo(phrases.getPhrase("player2thinking"));        
-        insertGameMessage(phrases.getPhrase("move") + move);
-        hint = await this.getPlayer2().nextGuess();        
+        showInfo(phrases.getPhrase("player2thinking"));
         let place = insertPlayerMessage("", 2);
-        insertUserForm(place, "Введите 4-значное число с разными цифрами", this, 2);
-        addHint(place, "Подсказка: " + hint);
-        // guess = await this.inputGuessNumber();
-        // response = this.getPlayer1().getResponse(guess);
-        // insertPlayerMessage(this.formatResponse(response), 1);
-        // this.getPlayer2().addGameLogEntry(guess, response);
-        // return response;
+        insertUserForm(place, phrases.getPhrase("promptToNumber"), this, 2);
+        if (this.getPlayer2().getGameLog().length > 0){
+            const hint = await this.getPlayer2().nextGuess();
+            addHint(place, phrases.getPhrase("hint") + hint);
+            addHint(place, phrases.getPhrase("gamelog") + this.getPlayer2().getGameLog());
+            addHint(place, phrases.getPhrase("rest") + this.getPlayer2().getDecisionsField().length);
+            if (this.getPlayer2().getDecisionsField().length < 10) addHint(place, this.getPlayer2().getDecisionsField());
+        }
     }
 
     formatResponse(response) {
@@ -174,8 +133,6 @@ class BullsCows {
         history = "";
         for (const entry of this.getPlayer2().getGameLog()) history += "(" + entry[0] + "-" + entry[1] + ")";
         message += '<p>[' + history + ']</p>';
-        // for (const entry of this._player2.getGameLog()) history += entry + " ";
-        // message += '<p>' + history + '</p>';
         insertReferenceMessage(message);
     }
 

@@ -89,6 +89,12 @@ class Phrases {
             //     "Réponse du joueur 2: ",
             //     "Antwort von Spieler 2: "
             // ]],
+            ["gamelog", [
+                "Game log: ",
+                "Журнал игры: ",
+                "Journal de jeu: ",
+                "Spielprotokoll: "
+            ]],
             ["player1won", [
                 "Player 1 won",
                 "Выиграл Игрок 1",
@@ -107,17 +113,17 @@ class Phrases {
                 "Match nul",
                 "Unentschieden"
             ]],
-            ["autoSecretCode", [
-                "Your automatically generated guess number is ",
-                "Ваше загаданное число, сгенерированное автоматически, равно ",
-                "Votre numéro de supposition généré automatiquement est ",
-                "Ihre automatisch generierte Ratezahl lautet "
+            ["guessNumber", [
+                "Let's guess a number...",
+                "Загадываем число...",
+                "Devinons un nombre...",
+                "Lass uns eine Zahl raten..."
             ]],
-            ["promptToSecretCode", [
-                "If you want to make a different wish, enter it here: ",
-                "Если Вы хотите загадать другое, введите здесь: ",
-                "Si vous souhaitez faire un souhait différent, indiquez-le ici: ",
-                "Wenn Du einen anderen Wunsch äußern möchtest, gib ihn hier ein: ",
+            ["promptToNumber", [
+                "Please enter a 4 digit number with different digits ",
+                "Введите 4-значное число с разными цифрами ",
+                "Veuillez saisir un numéro à 4 chiffres avec des chiffres différents",
+                "Bitte geben Sie eine 4-stellige Nummer mit unterschiedlichen Ziffern ein",
             ]],
             ["secretCode", [
                 "Your guessed number is ",
@@ -179,11 +185,11 @@ class Phrases {
                 "Le champ de recherche contient: ",
                 "Das Suchfeld enthält: "
             ]],
-            ["end", [
-                "The game is interrupted",
-                "Игра прерывается",
-                "Le jeu est interrompu",
-                "Das Spiel wird unterbrochen"
+            ["gameOn", [
+                "The game has begun",
+                "Игра началась",
+                "Le jeu a commencé",
+                "Das Spiel hat begonnen"
             ]],
         ])
     }

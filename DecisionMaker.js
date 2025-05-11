@@ -136,12 +136,21 @@ class DecisionMaker {
         }
         return optimalList;
     }
+
+    getFilteredList(optimalList){
+        let filteredList = [];
+        for (let number in optimalList) {
+            if (this.getDecisionsField().includes(number)) filteredList.push(number);
+        }
+        if (filteredList.length == 0) return optimalList;
+        else return filteredList;
+    }
     
     chooseRandomGuess(guessList){
         return guessList[Math.floor(Math.random() * guessList.length)];
     }
 
-    async getSecondGuessOptimising(guess, response, isList){
+    async getSecondGuessOptimising(guess, response){
         let nextGuess = "";
         let distribution = await this.getDistribution(guess);
         let guessList = [];
@@ -182,38 +191,50 @@ class DecisionMaker {
         }
         nextGuess = this.chooseRandomGuess(guessList);
         this.narrowDecisionsField(guess, response);
-        if (isList) return guessList;
         return nextGuess;
     }
 
     async getNextGuess(guess, response){
-        // const optimization = this._decisionsField.length == this._full.length;
         const optimization = this.getDecisionsField().length == this.getFull().length;
         let nextGuess;
         let guessList;
         if (optimization) {
-            nextGuess = await this.getSecondGuessOptimising(guess, response);            
+            nextGuess = await this.getSecondGuessOptimising(guess, response, false);            
         } 
         else {
             this.narrowDecisionsField(guess, response);
-            guessList = await this.getOptimalList(this._full);
+            if (this.getDecisionsField().length == 1) return this.getDecisionsField()[0];
+            if (this.getDecisionsField().length == 2) return this.chooseRandomGuess(this.getDecisionsField());
+            guessList = await this.getOptimalList(this.getFull());
+            guessList = this.getFilteredList(guessList);
             nextGuess = this.chooseRandomGuess(guessList);
         }
         return nextGuess;
     }
 
-    async getGuessList(guess, response){
-        const optimization = this.getDecisionsField().length == this.getFull().length;
-        let guessList;
-        if (optimization) {
-            guessList = await this.getSecondGuessOptimising(guess, response, true);            
-        } 
-        else {
-            this.narrowDecisionsField(guess, response);
-            guessList = await this.getOptimalList(this._full);
-        }
-        return guessList;
-    }
+    // async getGuessList(guess, response){
+    //     const optimization = this.getDecisionsField().length == this.getFull().length;
+    //     let guessList;
+    //     if (optimization) {
+    //         guessList = await this.getSecondGuessOptimising(guess, response, true);            
+    //     } 
+    //     else {
+    //         this.narrowDecisionsField(guess, response);
+    //         guessList = await this.getOptimalList(this.getFull());
+    //     }
+    //     return this.chooseRandom(guessList, 5);
+    // }
+
+    // chooseRandom(guessList, size){
+    //     let list = [];
+    //     if (guessList.length <= size) return guessList;
+    //     else {
+    //         while (list.length < size){
+    //             list.push(guessList.splice(Math.floor(Math.random() * guessList.length), 1));
+    //         }
+    //     }
+    //     return list;
+    // }
 
     getSecretCode() {
         return this.secretCode;

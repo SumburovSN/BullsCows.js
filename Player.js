@@ -8,15 +8,22 @@ class Player {
 
     async nextGuess(){
         let guess = "";
-        if (this._gameLog.length == 0) guess = this._decisionMaker.pick();
-        else if (this._decisionMaker.getDecisionsField().length == 0) {
+        if (this.getGameLog().length == 0) guess = this.getDecisionMaker().pick();
+        else if (this.getDecisionsField().length == 0) {
             return "errorInCode";
         }
-        else if (this._decisionMaker.getDecisionsField().length == 1)
-            guess = this._decisionMaker.getDecisionsField()[0];
+        else if (this.getDecisionsField().length == 1)
+            guess = this.getDecisionsField()[0];
         else
-            guess = await this._decisionMaker.getNextGuess(this._gameLog[this._gameLog.length-1][0], this._gameLog[this._gameLog.length-1][1]);
+            guess = await this.getDecisionMaker().getNextGuess(this.getGameLog().at(-1)[0], this.getGameLog().at(-1)[1]);
         return guess;
+    }
+
+    async getGuessList() {
+        if (this.getDecisionsField().length == 0) {
+            return "errorInCode";
+        }
+        return await this.getDecisionMaker().getGuessList(this.getGameLog().at(-1)[0], this.getGameLog().at(-1)[1]);
     }
 
     getResponse(guess){
